@@ -3,6 +3,7 @@ import express from "express";
 import { hash, compare } from "bcryptjs";
 import { UserModel } from "../models/UserModel.js";
 import jwt from "jsonwebtoken";
+import { verifyToken } from "../middlewares/verifyToken.js";
 const { sign } = jwt;
 export const userRoute = express.Router();
 
@@ -121,7 +122,7 @@ userRoute.put("/edit-todo/userid/:userid/taskid/:taskid", async (req, res) => {
 });
 
 //Route to set task as completed
-userRoute.put("/edit-status/userid/:userid/taskid/:taskid", async (req, res) => {
+userRoute.put("/edit-status/userid/:userid/taskid/:taskid", verifyToken,async (req, res) => {
   try {
     //get userid and taskid from url params
     let { userid, taskid } = req.params; //{userid:"",taskid:""}

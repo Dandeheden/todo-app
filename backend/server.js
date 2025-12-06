@@ -4,6 +4,8 @@ import { connect } from "mongoose";
 import cookieParser from "cookie-parser";
 import { userRoute } from "./APIs/UserAPI.js";
 import cors from "cors";
+import { UserModel } from "./models/UserModel.js";
+import { verifyToken } from "./middlewares/verifyToken.js";
 const app = express();
 
 //enable cors
@@ -30,3 +32,10 @@ async function connectDBAndStartServer() {
 }
 
 connectDBAndStartServer();
+
+//page refresh route
+app.get("/refresh",verifyToken,async(req,res)=>{
+  console.log("user is ",req.user)
+  let userObj=await UserModel.findOne({email:req.user.email})
+  res.status(200).json({message:"user",payload:userObj})
+})

@@ -4,7 +4,7 @@ import { loginContextObj } from "../contexts/LoginContext";
 import axios from "axios";
 
 function CreateTask() {
-  let { currentUser ,setCurrentUser} = useContext(loginContextObj);
+  let { currentUser, setCurrentUser } = useContext(loginContextObj);
 
   const {
     register,
@@ -18,8 +18,8 @@ function CreateTask() {
       withCredentials: true,
     });
     console.log("res is ", res);
-    if(res.data.message==='todo added'){
-      setCurrentUser(res.data.payload)
+    if (res.data.message === "todo added") {
+      setCurrentUser(res.data.payload);
     }
   };
 

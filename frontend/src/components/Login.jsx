@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { loginContextObj } from "../contexts/LoginContext";
 import {useNavigate} from 'react-router-dom'
+import { FaUserLock } from "react-icons/fa";
 
 function Login() {
   const {
@@ -28,7 +29,7 @@ function Login() {
 
   return (
     <div>
-      <h1 className="text-center text-info display-3">User Login</h1>
+      <h1 className="text-center text-info display-3"> <FaUserLock />  User Login</h1>
 
       {/* display login error message */}
       {

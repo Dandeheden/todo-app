@@ -6,11 +6,13 @@ export function verifyToken(req, res, next) {
   const encodedToken = req.cookies.token;
   //if encodedtoken not found
   if (encodedToken === undefined) {
-    res.status(401).json({ nessage: Unauthorized });
+    res.status(401).json({ message: Unauthorized });
   } else {
     try {
       //verify token
       let decodedToken = verify(encodedToken, "abcdef");
+      console.log("decode token is ",decodedToken)
+      req.user=decodedToken;
       //forward req to next
       next();
     } catch (err) {

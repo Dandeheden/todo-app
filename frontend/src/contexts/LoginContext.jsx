@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 
 //create context object
@@ -13,8 +13,8 @@ function LoginContext({ children }) {
   //user login
   const userLogin = async (userCredObj) => {
     try {
-      let res = await axios.post("http://localhost:8000/user-api/login", userCredObj,{
-        withCredentials:true
+      let res = await axios.post("http://localhost:8000/user-api/login", userCredObj, {
+        withCredentials: true,
       });
       //if login success
       if (res.status === 200) {
@@ -25,24 +25,58 @@ function LoginContext({ children }) {
       }
     } catch (err) {
       console.log("err is ", err.response.data.message);
-      setLoginErrorMessage(err.response.data.message)
+      setLoginErrorMessage(err.response.data.message);
     }
   };
 
-
   //user logout
   const userLogout = async () => {
-    let res=await axios.get("http://localhost:8000/user-api/logout",{withCredentials:true})
-    if(res.status===200){
-        setLoginStatus(false)
+    let res = await axios.get("http://localhost:8000/user-api/logout", { withCredentials: true });
+    if (res.status === 200) {
+      setLoginStatus(false);
     }
   };
 
   console.log("Current user is ", currentUser);
-  console.log("login err is ",loginErrMessage)
+  console.log("login err is ", loginErrMessage);
+
+  // const pageRefresh = async () => {
+  //   let res = await axios.get("http://localhost:8000/refresh", { withCredentials: true });
+  //   console.log("res is ", res);
+  //   setCurrentUser(res.data.payload);
+  //   setLoginStatus(true);
+  //   setLoginErrorMessage("");
+  // };
+  const pageRefresh = async () => {
+    try {
+      let res = await axios.get("http://localhost:8000/refresh", {
+        withCredentials: true,
+      });
+
+      setCurrentUser(res.data.payload);
+      setLoginStatus(true);
+      setLoginErrorMessage("");
+    } catch (err) {
+      // When no token exists OR expired token → refresh fails → user is not logged in.
+      if (err.response?.status === 401) {
+        setLoginStatus(false);
+        setCurrentUser(null);
+        // DO NOT show any message during initial load
+        return;
+      }
+
+      console.error("Unexpected error:", err);
+    }
+  };
+
+  useEffect(() => {
+    pageRefresh();
+  }, []);
 
   return (
-    <loginContextObj.Provider value={{ loginStatus, currentUser, setCurrentUser,loginErrMessage, userLogin, userLogout }}>
+    <loginContextObj.Provider
+      value={{ loginStatus, currentUser, setCurrentUser, loginErrMessage, userLogin, userLogout }}
+    >
       {children}
     </loginContextObj.Provider>
   );

@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { loginContextObj } from "../contexts/LoginContext";
 
 function Header() {
-  const { loginStatus,userLogout } = useContext(loginContextObj);
+  const { loginStatus,userLogout ,currentUser} = useContext(loginContextObj);
 
   return (
     <div>
@@ -24,7 +24,7 @@ function Header() {
         ) : (
           <li className="nav-item">
             <NavLink className="nav-link" to="register" onClick={userLogout}>
-              Logout
+              Logout <span className="bg-black text-white p-2 ms-4">{currentUser.email}</span>
             </NavLink>
           </li>
         )}

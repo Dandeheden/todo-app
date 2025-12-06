@@ -3,6 +3,8 @@ import { loginContextObj } from "../contexts/LoginContext";
 import axios from "axios";
 import { Modal } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import { FaEdit } from "react-icons/fa";
+import { IoSaveOutline } from "react-icons/io5";
 
 function TaskList() {
   const { currentUser, setCurrentUser } = useContext(loginContextObj);
@@ -70,7 +72,7 @@ function TaskList() {
           {/* edit button */}
           <div className="text-start">
             <button className="btn btn-primary" onClick={() => openModal(todoObj)}>
-              Edit
+              <FaEdit />
             </button>
           </div>
           <div className="text-end mb-2">
@@ -102,7 +104,7 @@ function TaskList() {
             <input type="text" {...register("taskName")} className="form-control mb-3" />
             <input type="text" {...register("description")} className="form-control mb-3" />
             <button type="submit" className="btn btn-success">
-              save
+             <IoSaveOutline /> save
             </button>
           </form>
         </Modal.Body>
