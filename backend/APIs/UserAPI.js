@@ -99,6 +99,7 @@ userRoute.put("/edit-todo/userid/:userid/taskid/:taskid", async (req, res) => {
   try {
     //get userid and taskid from url params
     let { userid, taskid } = req.params; //{userid:"",taskid:""}
+    console.log(userid,taskid)
     //get modifed taskobj
     let modifiedTaskObj = req.body;
     //update task
